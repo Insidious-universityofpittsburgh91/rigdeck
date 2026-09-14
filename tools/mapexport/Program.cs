@@ -267,7 +267,7 @@ namespace MapExport
                 var node = mapper.GetNodeByUid(city.NodeUid);
                 var x = node?.X ?? city.X;
                 var z = node?.Z ?? city.Z;
-                var name = mapper.Localization?.GetLocaleValue(city.City.LocalizationToken) ?? city.City.Name;
+                var name = Unescape(mapper.Localization?.GetLocaleValue(city.City.LocalizationToken) ?? city.City.Name);
                 if (string.IsNullOrEmpty(name)) continue;
 
                 var entry = "[" + N(x) + "," + N(z) + "," + Quote(name) + "]";
@@ -533,6 +533,57 @@ namespace MapExport
         private static string N(float value)
         {
             return Math.Round(value, 1).ToString("0.#", CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>"Zs\xc3\xa1mb\xc3\xa9k" -> "Zsámbék". The game's .sii files write anything
+        /// outside ASCII as \xNN escapes of the UTF-8 bytes, and ts-map hands the text on
+        /// exactly as it found it. Without this the escapes reach the tablet as themselves,
+        /// because Quote turns the backslash into a literal one. A run of escapes is decoded
+        /// together, since one accented letter is two or three bytes; anything that turns out
+        /// not to be UTF-8 is put back as it came rather than guessed at.</summary>
+        private static string Unescape(string text)
+        {
+            if (string.IsNullOrEmpty(text) || text.IndexOf("\\x", StringComparison.Ordinal) < 0)
+                return text;
+
+            var sb = new StringBuilder(text.Length);
+            var run = new List<byte>();
+            var i = 0;
+            while (i < text.Length)
+            {
+                if (i + 3 < text.Length && text[i] == '\\' && (text[i + 1] == 'x' || text[i + 1] == 'X')
+                    && IsHex(text[i + 2]) && IsHex(text[i + 3]))
+                {
+                    run.Add((byte)((HexVal(text[i + 2]) << 4) | HexVal(text[i + 3])));
+                    i += 4;
+                    continue;
+                }
+                if (run.Count > 0) { sb.Append(FromUtf8(run)); run.Clear(); }
+                sb.Append(text[i]);
+                i++;
+            }
+            if (run.Count > 0) sb.Append(FromUtf8(run));
+            return sb.ToString();
+        }
+
+        private static bool IsHex(char c) =>
+            (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
+
+        private static int HexVal(char c) =>
+            c <= '9' ? c - '0' : (char.ToLowerInvariant(c) - 'a' + 10);
+
+        private static string FromUtf8(List<byte> bytes)
+        {
+            try
+            {
+                return new UTF8Encoding(false, true).GetString(bytes.ToArray());
+            }
+            catch (DecoderFallbackException)
+            {
+                var sb = new StringBuilder(bytes.Count * 4);
+                foreach (var b in bytes) sb.Append("\\x").Append(b.ToString("x2"));
+                return sb.ToString();
+            }
         }
 
         private static string Quote(string text)

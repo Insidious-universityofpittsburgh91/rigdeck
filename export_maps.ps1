@@ -134,7 +134,24 @@ function Find-GameDir($title) {
 }
 
 if (-not $ListMaps) { Write-Host "" }
+# Rebuild when the exporter's own sources have moved on, not just when the exe is
+# missing: editing Program.cs and seeing the old binary run is a long way to a wrong map.
+$sources = @(
+    (Join-Path $tools "mapexport\Program.cs"),
+    (Join-Path $tools "mapexport\MapExport.csproj")
+) | Where-Object { Test-Path $_ }
+
+$stale = $false
+if ((Test-Path $exe) -and $sources) {
+    $newest = ($sources | ForEach-Object { (Get-Item $_).LastWriteTimeUtc } | Measure-Object -Maximum).Maximum
+    $stale = $newest -gt (Get-Item $exe).LastWriteTimeUtc
+}
+
 if (-not (Test-Path $exe)) { Build-Exporter }
+elseif ($stale) {
+    Write-Host "  exporter is out of date -- rebuilding" -ForegroundColor Cyan
+    Build-Exporter
+}
 elseif (-not $ListMaps) { Write-Host "  exporter already built" -ForegroundColor DarkGray }
 
 $targets = if ($Game -eq "Both") { @("ETS2", "ATS") } else { @($Game) }
