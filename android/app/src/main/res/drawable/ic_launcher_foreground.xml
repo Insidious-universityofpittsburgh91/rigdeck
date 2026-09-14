@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The panel's own gauge mark, redrawn as a vector. The group scale keeps it inside the
+     adaptive-icon safe zone so launchers that mask to a circle do not clip the needle. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="192"
+    android:viewportHeight="192">
+
+    <group android:scaleX="0.8" android:scaleY="0.8" android:pivotX="96" android:pivotY="96">
+        <path
+            android:pathData="M38,96 A58,58 0 1,0 154,96 A58,58 0 1,0 38,96"
+            android:strokeColor="#332C22"
+            android:strokeWidth="13" />
+        <path
+            android:pathData="M96,38 A58,58 0 0,1 147,126"
+            android:strokeColor="#FFB43D"
+            android:strokeWidth="13"
+            android:strokeLineCap="round" />
+        <path
+            android:pathData="M96,96 L128,66"
+            android:strokeColor="#F3EEE4"
+            android:strokeWidth="9"
+            android:strokeLineCap="round" />
+        <path
+            android:pathData="M87,96 A9,9 0 1,0 105,96 A9,9 0 1,0 87,96"
+            android:fillColor="#F3EEE4" />
+    </group>
+</vector>

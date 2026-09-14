@@ -1,0 +1,61 @@
+Rig Deck -- what is in this folder that other people wrote
+==========================================================
+
+Rig Deck itself is open source, under the MIT License -- see LICENSE.txt beside
+this file. The pieces below are bundled so that the installation needs no
+internet connection and no build tools. Each is used unmodified, and each is
+named here with where it came from.
+
+
+runtime\
+    Python 3.14.6, the "embeddable" build from python.org, unchanged.
+    Python Software Foundation License, version 2 -- see runtime\LICENSE.txt.
+    https://www.python.org/downloads/windows/
+
+setup\vJoySetup-2.2.2.0-Win10-Win11.exe
+    vJoy virtual joystick driver, originally by Shaul Eizikovich, in the
+    2.2.2.0 build published by Brunner Elektronik. That build is EV-signed and
+    Microsoft-attested, which is why it loads with Windows Memory Integrity
+    left on -- the older 2.2.1 cannot.
+    https://github.com/BrunnerInnovation/vJoy/releases/tag/v2.2.2.0
+
+setup\scs-sdk-plugin-1.12.1.zip
+    scs-sdk-plugin by RenCloud: the DLL the game loads to publish its telemetry.
+    MIT License, Copyright (c) 2014 Hans.
+    https://github.com/RenCloud/scs-sdk-plugin
+
+tools\mapexport\bin\TsMap.dll, libdeflate.dll
+    ts-map by Dario Wouters: the reader that parses the game's .scs archives.
+    MIT License, Copyright (c) 2017 Dario Wouters.
+    https://github.com/dariowouters/ts-map
+    MapExport.exe beside it is Rig Deck's own headless driver for it.
+
+tools\mapexport\bin\Newtonsoft.Json.dll
+    Json.NET by James Newton-King. MIT License.
+    https://github.com/JamesNK/Newtonsoft.Json
+
+
+The MIT License, as it applies to the three MIT-licensed components above
+--------------------------------------------------------------------------
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+Not bundled, and never redistributed: the map itself. The road network under
+the tablet's GPS is read out of your own copy of the game, on your own PC, by
+the installer. Nothing about it leaves this machine.

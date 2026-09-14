@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Rig Deck</string>
+    <string name="setup_title">Where is the PC?</string>
+    <string name="setup_hint">192.168.0.56:8384</string>
+    <string name="setup_help">Leave it to search the network, or type the address the pairing page shows.</string>
+    <string name="scan">Search</string>
+    <string name="connect">Connect</string>
+    <string name="retry">Retry</string>
+    <string name="change_address">Change address</string>
+    <string name="scanning">Searching the network…</string>
+    <string name="not_found">Nothing answered. Is the server running on the PC?</string>
+    <string name="offline_title">Cannot reach the panel</string>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The same handful of colours the panel itself uses, so the app never flashes a
+     white frame around a very dark dashboard. -->
+<resources>
+    <color name="ground">#100E0B</color>
+    <color name="panel">#1A1713</color>
+    <color name="line">#332C22</color>
+    <color name="text">#F3EEE4</color>
+    <color name="muted">#8C8378</color>
+    <color name="accent">#FFB43D</color>
+</resources>

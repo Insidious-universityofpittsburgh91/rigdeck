@@ -1,0 +1,265 @@
+===============================================================================
+  RIG DECK
+  Nadzorna ploča za Euro Truck Simulator 2 i American Truck Simulator
+===============================================================================
+
+  Sve na jednom ekranu tableta: brzina, obrtaji, gorivo, teret, oštećenja, GPS
+  s pravom mapom iz tvoje igre — i tipke koje stvarno rade u kamionu.
+
+  Nema listanja, nema stranica, nema swipea. Sve što ti treba je odmah vidljivo,
+  a tipke su složene kao u pravoj kabini.
+
+  Dvije stvari koje obični "button box" ne može:
+
+    • Naredba se potvrđuje, ne nagađa. Kad stisneš tipku, ona ostaje "u tijeku"
+      dok sama igra ne javi da je stanje promijenjeno. Ako se to ne dogodi,
+      tipka to i kaže.
+
+    • Tipke idu preko virtualnog kontrolera (vJoy), a ne preko tipkovnice. Igra
+      vidi pravi joystick, pa je dostupna baš svaka funkcija iz Options →
+      Controls — uključujući one koje uopće nemaju tipku na tipkovnici.
+
+
+-------------------------------------------------------------------------------
+  1. ŠTO TI TREBA
+-------------------------------------------------------------------------------
+
+  • Windows 10 ili 11 PC na kojem igraš ETS2 ili ATS
+  • Android tablet (bilo koji, landscape)
+  • Tablet i PC na istoj Wi-Fi mreži
+
+  NE treba ti: Python, Visual Studio, nikakav račun, nikakva registracija i
+  nikakav internet nakon što skineš ovaj zip. Sve je unutra.
+
+
+-------------------------------------------------------------------------------
+  2. INSTALACIJA
+-------------------------------------------------------------------------------
+
+  KORAK 1 — Raspakiraj
+
+    Raspakiraj cijelu mapu "RigDeck" negdje gdje će i ostati: npr. C:\RigDeck
+    ili na Desktop. NE pokreći ništa direktno iz zipa — Windows to otvara u
+    privremenoj mapi koju sam obriše, pa bi prečac na Desktopu ostao pokazivati
+    u prazno. (Instalacija to i provjerava pa će te zaustaviti ako se dogodi.)
+
+  KORAK 2 — Dvoklik na "1 - INSTALIRAJ RIG DECK.bat"
+
+    Windows će tražiti administratorske ovlasti — treba ih zbog drivera,
+    dodatka u mapi igre i pravila u vatrozidu. Nakon toga instalacija sve radi
+    sama i ispisuje što radi. Traje nekoliko minuta, uglavnom zbog mape.
+
+    Što se točno događa:
+
+      1) Python — ne instalira se ništa u sustav. Uz Rig Deck dolazi vlastiti
+         Python u mapi "runtime" i koristi se samo on.
+
+      2) Telemetrijski dodatak — u mapu igre (bin\win_x64\plugins) kopira se
+         scs-telemetry.dll. To je ono što igri omogućuje da uopće javlja brzinu,
+         gorivo i ostalo. Ako već imaš SIM Dashboard ili nešto slično, ostaje
+         raditi i dalje — igra učitava sve dodatke.
+
+      3) vJoy — virtualni kontroler. Ako ga nemaš, otvorit će se njegov
+         instalater; klikni kroz njega i prihvati driver.
+
+         DVIJE VAŽNE STVARI:
+           – ovo je potpisana verzija 2.2.2.0, pa Memory Integrity (Core
+             isolation) u Windowsima može ostati UPALJEN. Nemoj ga gasiti.
+           – na kraju instalacije zna izgledati kao da se zaglavio. Nije:
+             iza prozora se skriva pitanje o restartu. Alt+Tab i odgovori.
+
+         Nakon toga se uređaj 1 postavlja na 64 tipke (panel koristi 32).
+
+      4) Vatrozid — otvara se port 8384 samo za privatne mreže, i to samo za
+         Rig Deckov Python. To je ono što tabletu dopušta da se spoji.
+
+      5) Prečac — "Rig Deck" na Desktopu i u Start izborniku.
+
+         Rig Deck se NE pokreće sam s Windowsima i ne postoji način da to
+         napravi. Pokreneš ga kad sjedneš voziti, ugasiš iz trayja kad završiš.
+
+      6) Mapa za GPS — čita se ravno iz tvojih .scs datoteka igre, sa svim
+         DLC-ovima i modovima koje imaš. Ovo je dio koji traje par minuta.
+         Ništa se ne skida s interneta i ništa ne odlazi s tvog računala.
+
+      7) Tipke — pokušava ih odmah upisati u tvoj profil u igri. Na novom PC-u
+         to još neće uspjeti (igra prvo mora vidjeti vJoy), pa slijedi korak 3.
+
+  KORAK 3 — Pokreni igru jednom, da vidi vJoy
+
+    Ovo je jedini korak koji se ne može odraditi umjesto tebe.
+
+      1) pokreni ETS2 ili ATS
+      2) Options → Controls
+      3) u popisu kontrolera odaberi "vJoy Device"
+      4) provjeri da ti je volan i dalje na svom mjestu (obično prvi u popisu)
+      5) izađi iz igre — do kraja, ne samo u glavni izbornik
+
+  KORAK 4 — Dvoklik na "2 - POVEZI TIPKE U IGRI.bat"
+
+    Ovo upiše svih 32 tipke u profil igre. Ne treba administrator, jer dira
+    samo tvoj profil u Documents, i prije upisa napravi kopiju pod imenom
+    controls.sii.rigdeck-backup.
+
+    Igra mora biti zatvorena. Ako je otvorena, skripta će to reći i odbiti —
+    igra drži profil u memoriji i prepisala bi sve natrag pri izlasku.
+
+    NEMOJ tipke povezivati ručno. Popis u panelu i popis u igri nisu istim
+    redoslijedom; preskočiš li jedan red, sve nakon njega sjedne jednu tipku
+    ranije — tiho. Onda truba povuče ručnu, a žmigavci upale brisače.
+
+
+-------------------------------------------------------------------------------
+  3. TABLET
+-------------------------------------------------------------------------------
+
+  Otvori Rig Deck (ikona na Desktopu). Pojavi se u trayu, kraj sata. Dvoklik na
+  tu ikonu otvara stranicu za uparivanje s dva QR koda.
+
+    • DONJI QR (preporučeno) — instalira aplikaciju na tablet.
+      Skeniraj ga kamerom tableta, Chrome će skinuti RigDeck.apk, Android će
+      pitati smije li Chrome instalirati aplikacije — dopusti, pa instaliraj.
+
+      Zašto aplikacija, a ne samo browser:
+        – ekran ostaje upaljen dok voziš
+        – panel je preko cijelog ekrana, bez adresne trake
+        – ostaje u landscapeu, kako god okreneš tablet
+        – sama nađe PC na mreži, pa nemaš ništa za pamtiti ni tipkati
+
+    • GORNJI QR — otvara panel u Chromeu, ako ne želiš instalirati aplikaciju.
+      Radi jednako dobro, samo s trakom browsera i bez gornje tri stvari.
+
+  Ikona u trayu govori u kojem si stanju:
+
+      siva      igra nije pokrenuta
+      žuta      igra radi, tablet još nije spojen
+      zelena    igra radi i tablet je spojen
+
+  Desni klik na nju: uparivanje, popis tipki, izvoz mape, izlaz.
+
+
+-------------------------------------------------------------------------------
+  4. SVAKODNEVNO KORIŠTENJE
+-------------------------------------------------------------------------------
+
+  1) otvori Rig Deck s Desktopa
+  2) pokreni igru
+  3) otvori aplikaciju na tabletu
+
+  Redoslijed nije bitan. Panel piše NO GAME dok igra ne krene i sam je pokupi,
+  a tablet se sam ponovno spoji čim se server pojavi.
+
+  Dok si u izborniku igre panel piše IN MENU i brojke se zamrznu — igra u
+  izborniku ne šalje telemetriju. Tipke tamo i dalje rade, jer igra kontroler
+  čita i u izborniku. (Baš zato se tipke uopće i mogu povezati.)
+
+
+-------------------------------------------------------------------------------
+  5. GPS I MAPA
+-------------------------------------------------------------------------------
+
+  Mapa nije skinuta s interneta — izvučena je iz tvoje igre, pa se poklapa s
+  onim što vidiš kroz vjetrobran, ProMods uključen.
+
+    • prstima: jedan prst pomiče, dva zumiraju, oba istovremeno rade
+    • + i − skaču po razinama, od 55 km širine do par metara
+    • povučeš li mapu u stranu, pojavi se Recentre; ako zaboraviš, sama se
+      vrati na kamion nakon osam sekundi
+    • ikone: gorivo, parking, servis, garaže, saloni, vage, biroi za posao i
+      dvorišta firmi — svaka se pojavi na zumu na kojem počne biti korisna
+
+  KAD IZAĐE NOVI PROMODS ILI KUPIŠ NOVI DLC
+
+    Mapa se ne mijenja sama, namjerno: izvoz traje minutama i traži zatvorenu
+    igru, a to se ne radi nekome iza leđa dok vozi.
+
+    Ali primijeti. Panel će ti jednom javiti da je mapa zastarjela. Tada:
+
+      1) pokreni igru jednom (da zapiše koje modove ima), pa izađi
+      2) desni klik na Rig Deck u trayu → "Export the map from the game files"
+      3) pričekaj da završi; panel pokupi novu mapu pri sljedećem otvaranju
+
+
+-------------------------------------------------------------------------------
+  6. JEDINICE I VALUTA
+-------------------------------------------------------------------------------
+
+  Jedna verzija pokriva obje igre. Panel prati onu koja radi — ETS2 daje km i
+  €, ATS milje i $. Ako želiš drugačije, klikni na oznaku jedinica u gornjoj
+  traci: auto → metrički → imperijalni.
+
+
+-------------------------------------------------------------------------------
+  7. AKO NEŠTO NE RADI
+-------------------------------------------------------------------------------
+
+  Panel piše NO GAME, a igra radi
+      Telemetrijski dodatak nije u mapi igre ili je igra pokrenuta iz druge
+      instalacije. Pokreni instalaciju ponovno, ili ručno:
+        powershell -ExecutionPolicy Bypass -File install_plugin.ps1
+
+  Panel sve pokazuje, ali nijedna tipka ne radi u igri
+      Igra ne zna za vJoy ili tipke nisu upisane. Koraci 3 i 4 iznad.
+      Provjeri i da u igri Options → Controls vJoy stvarno stoji u popisu.
+
+  Tablet ne nalazi PC
+      – jesu li oba na istoj Wi-Fi mreži? (ne jedan na 5 GHz gostujućoj, drugi
+        na kabelu u drugoj podmreži)
+      – je li Rig Deck pokrenut na PC-u? Ikona u trayu, kraj sata.
+      – neke Wi-Fi rute imaju "izolaciju klijenata"; tada uređaji na istoj
+        mreži ne vide jedan drugoga. Isključi to u postavkama rutera.
+      – ako je Windows pitao za vatrozid, mora biti dopušteno za privatne mreže
+
+  Tipke rade, ali krive stvari
+      Netko je tipke povezivao i ručno. Pokreni "2 - POVEZI TIPKE U IGRI.bat"
+      još jednom — on počisti i upiše sve iznova.
+
+  Igra je resetirala kontrole
+      Isto: "2 - POVEZI TIPKE U IGRI.bat".
+
+  vJoy instalater izgleda zaglavljeno
+      Alt+Tab. Iza prozora čeka pitanje o restartu. Driver je već instaliran.
+
+  GPS je prazan
+      Mapa nije izvezena. Desni klik na tray ikonu → "Export the map from the
+      game files".
+
+
+-------------------------------------------------------------------------------
+  8. ŠTO JE GDJE, I KAKO SE UKLANJA
+-------------------------------------------------------------------------------
+
+  U sustav je dirnuto samo ovo:
+
+    • driver vJoy (Postavke → Aplikacije, ako ga ništa drugo ne koristi)
+    • scs-telemetry.dll u <mapa igre>\bin\win_x64\plugins
+    • pravilo u vatrozidu "Rig Deck panel"
+    • prečaci na Desktopu i u Start izborniku
+    • i tvoj controls.sii u profilu igre — uz kopiju starog, pored njega
+
+  "UKLONI RIG DECK.bat" makne prečace i pravilo iz vatrozida, i ispiše kako se
+  ostalo makne ručno. Nakon toga obriši ovu mapu i nema ničega više.
+
+  Ništa se ne pokreće s Windowsima. Nikad. Nema ni prekidača za to.
+
+
+-------------------------------------------------------------------------------
+  9. SITNICE VRIJEDNE ZNANJA
+-------------------------------------------------------------------------------
+
+  • Panel je dostupan svakome tko je na istoj mreži i zna adresu. Kod kuće to
+    nije problem; na tuđoj Wi-Fi mreži imaj to na umu.
+
+  • Žmigavci nemaju tipke na panelu — namjerno, jer su na volanu. Vide se kao
+    lampice, kao na pravoj ploči.
+
+  • Popis svih tipki i na što su vezane: desni klik na tray ikonu → button
+    sheet.
+
+  • Datoteka NOTICE.txt navodi tuđe komponente koje su ovdje priložene i pod
+    kojom licencom.
+
+  • README.md je tehnički opis cijele stvari, na engleskom, ako te zanima kako
+    je napravljeno.
+
+===============================================================================

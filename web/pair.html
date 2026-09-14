@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rig Deck — pair your tablet</title>
+<style>
+  :root {
+    --ground: #100E0B; --panel: #191612; --raised: #211D17; --line: #332C22;
+    --text: #F3EEE4; --muted: #9C9285; --accent: #FFB43D; --crit: #FF5A47;
+    --face: "Roboto Condensed", "Segoe UI Variable Display", system-ui, sans-serif;
+    --mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; background: var(--ground); color: var(--text);
+    font-family: var(--face); display: grid; place-items: center; padding: 4vmin;
+  }
+  .card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 18px;
+    padding: clamp(20px, 4vmin, 40px); max-width: 900px; width: 100%;
+    display: grid; grid-template-columns: auto 1fr; gap: clamp(20px, 4vmin, 44px); align-items: center;
+  }
+  @media (max-width: 720px) { .card { grid-template-columns: 1fr; justify-items: center; text-align: center; } }
+  h1 { margin: 0 0 6px; font-size: clamp(24px, 3.4vmin, 36px); letter-spacing: .02em; }
+  p { margin: 0 0 14px; color: var(--muted); line-height: 1.55; max-width: 46ch; }
+  canvas { background: #fff; border-radius: 12px; display: block; padding: 10px; }
+  .url {
+    font-family: var(--mono); font-size: clamp(18px, 2.6vmin, 26px); font-weight: 600;
+    background: var(--raised); border: 1px solid var(--line); border-radius: 10px;
+    padding: 12px 16px; display: inline-block; word-break: break-all; color: var(--accent);
+  }
+  ol { color: var(--muted); line-height: 1.7; padding-left: 20px; margin: 16px 0 0; max-width: 46ch; text-align: left; }
+  .alt { margin-top: 14px; font-size: 14px; color: var(--muted); }
+  .alt b { color: var(--text); font-family: var(--mono); font-weight: 600; }
+  .err { color: var(--crit); }
+  /* Stays hidden unless this server actually has an apk to hand out. */
+  .app { display: none; grid-column: 1 / -1; margin-top: 8px; padding-top: 22px;
+         border-top: 1px solid var(--line); grid-template-columns: auto 1fr;
+         gap: clamp(16px, 3vmin, 32px); align-items: center; }
+  .app.on { display: grid; }
+  .app h2 { margin: 0 0 6px; font-size: 18px; letter-spacing: .02em; }
+  .app p { margin: 0 0 8px; }
+  .app canvas { width: 180px; height: 180px; }
+  @media (max-width: 720px) { .app.on { grid-template-columns: 1fr; justify-items: center; text-align: center; } }
+</style>
+</head>
+<body>
+  <div class="card">
+    <canvas id="qr" width="320" height="320"></canvas>
+    <div>
+      <h1>Pair your tablet</h1>
+      <p>Scan this once with the tablet camera. Everything after that is just opening the app.</p>
+      <div class="url" id="url">looking for your network address…</div>
+      <ol>
+        <li>Make sure the tablet is on the same Wi-Fi as this PC.</li>
+        <li>Scan the code, or type the address into Chrome.</li>
+        <li>Chrome menu → <b>Add to Home screen</b> saves it, though it still opens in a tab.</li>
+      </ol>
+      <div class="alt" id="alt"></div>
+    </div>
+
+    <div class="app" id="app">
+      <canvas id="apkqr" width="360" height="360"></canvas>
+      <div>
+        <h2>Better: the tablet app</h2>
+        <p>Scan this one instead to install it. The screen stays awake, the panel fills it
+           with no browser bars, it stays landscape, and it finds this PC on its own — so
+           there is no address to keep.</p>
+        <p>Android will ask whether Chrome may install apps; say yes, then open it once.</p>
+      </div>
+    </div>
+  </div>
+
+<script src="qr.js"></script>
+<script>
+  const urlEl = document.getElementById('url');
+  const altEl = document.getElementById('alt');
+
+  fetch('/api/status')
+    .then(r => r.json())
+    .then(status => {
+      const port = status.config?.port ?? location.port;
+      const addresses = status.addresses || [];
+      if (!addresses.length) throw new Error('no LAN address found');
+
+      const primary = `http://${addresses[0]}:${port}`;
+      urlEl.textContent = primary;
+      QR.draw(document.getElementById('qr'), primary, { size: 320, dark: '#100E0B' });
+
+      // The apk is only there in the packaged copy. Asking for it is how the page finds
+      // out -- and a missing file is answered with the panel itself, so the content type
+      // is what separates "here it is" from "here is index.html instead".
+      fetch('/RigDeck.apk', { method: 'HEAD' })
+        .then(r => {
+          if (!r.ok || (r.headers.get('content-type') || '').startsWith('text/html')) return;
+          QR.draw(document.getElementById('apkqr'), `${primary}/RigDeck.apk`,
+                  { size: 360, dark: '#100E0B' });
+          document.getElementById('app').classList.add('on');
+        })
+        .catch(() => {});
+
+      if (addresses.length > 1) {
+        altEl.innerHTML = 'Other addresses this PC answers on: ' +
+          addresses.slice(1).map(a => `<b>${a}:${port}</b>`).join(', ') +
+          '<br>If the code does not work, your PC likely has more than one network adapter — try these.';
+      }
+    })
+    .catch(err => {
+      urlEl.textContent = 'Could not read the server address';
+      urlEl.classList.add('err');
+      altEl.textContent = String(err);
+    });
+</script>
+</body>
+</html>

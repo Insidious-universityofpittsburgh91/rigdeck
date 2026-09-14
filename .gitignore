@@ -1,0 +1,40 @@
+# Signing keys. Never commit these -- and keep a backup somewhere else, because Android
+# refuses to upgrade an app signed with a different key, so losing them means uninstalling
+# the app from the tablet before the next build will install.
+android/keystore/
+
+# Build output
+dist/
+# drawn by install_app.ps1 from trayicon.py -- gitignore has no trailing comments
+RigDeck.ico
+bin/
+obj/
+build/
+.gradle/
+android/local.properties
+__pycache__/
+*.pyc
+
+# The map is exported from the game's own .scs archives, mods included: ~70 MB of derived
+# data that is not ours to redistribute. Rebuild it with export_maps.ps1.
+web/maps/
+
+# Toolchain that export_maps.ps1 fetches for itself
+tools/ts-map/
+tools/nupkg/
+tools/refs/
+tools/*.exe
+
+# The Python bundled into the distribution zip -- someone else's binary, fetched by
+# packaging/fetch_runtime.ps1
+tools/python-embed/
+
+# By-products of an export run. maps.json is the tray's cache of which maps each
+# installed game currently offers -- local to this machine, and rewritten on demand.
+tools/mapexport/maps.json
+tools/mapexport/*.log
+tools/mapexport/*.png
+tools/mapexport/*-args.txt
+
+# Written at runtime from the defaults in server/rigdeck/config.py
+server/config.json

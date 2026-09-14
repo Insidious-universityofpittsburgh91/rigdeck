@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#100E0B">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Rig Deck</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ISO 2575 tell-tales and interface icons -->
+<svg class="sprite" aria-hidden="true" focusable="false"><defs>
+  <symbol id="i-low" viewBox="0 0 24 24">
+    <path class="solid" d="M10 5 A7 7 0 0 0 10 19 Z"/>
+    <path d="M12.5 7.6 l5.5 2.4M12.5 11.2 l5.5 2.4M12.5 14.8 l5.5 2.4"/>
+  </symbol>
+  <symbol id="i-high" viewBox="0 0 24 24">
+    <path class="solid" d="M10 5 A7 7 0 0 0 10 19 Z"/>
+    <path d="M12.5 8 h5.6M12.5 12 h5.6M12.5 16 h5.6"/>
+  </symbol>
+  <symbol id="i-beacon" viewBox="0 0 24 24">
+    <path class="solid" d="M7 17.4 a5 5.4 0 0 1 10 0 z"/>
+    <path class="solid" d="M5.6 18.2 h12.8 v2.4 h-12.8 z"/>
+    <path d="M12 3.2 v2.6M6.6 5.2 l1.8 1.9M17.4 5.2 l-1.8 1.9M3.4 10.4 h2.4M20.6 10.4 h-2.4"/>
+  </symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path class="solid" d="M13.6 4.2 L4.4 12 l9.2 7.8 v-4.6 h6 v-6.4 h-6 z"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path class="solid" d="M10.4 4.2 L19.6 12 l-9.2 7.8 v-4.6 h-6 v-6.4 h6 z"/></symbol>
+  <symbol id="i-hazard" viewBox="0 0 24 24">
+    <path d="M12 3.4 L21.6 20.2 H2.4 Z"/><path d="M12 9.4 v4.4"/>
+    <circle class="solid" cx="12" cy="17.1" r=".95"/>
+  </symbol>
+  <symbol id="i-wiper" viewBox="0 0 24 24">
+    <path d="M2.6 18.6 q9.4 -13.2 18.8 0"/><path d="M11.8 18.6 L16.8 6.4"/><path d="M14.6 5.4 l4 1.7"/>
+  </symbol>
+  <symbol id="i-horn" viewBox="0 0 24 24">
+    <path class="solid" d="M3.4 9.4 h3.2 l5.4 -3.4 v12 l-5.4 -3.4 h-3.2 z"/>
+    <path d="M15.4 9.2 a4.2 4.2 0 0 1 0 5.6"/>
+  </symbol>
+  <symbol id="i-airhorn" viewBox="0 0 24 24">
+    <path class="solid" d="M2.6 9.4 h3 l5 -3.2 v11.6 l-5 -3.2 h-3 z"/>
+    <path d="M13.8 9.4 a4 4 0 0 1 0 5.2M16.8 7.2 a7.6 7.6 0 0 1 0 9.6M19.8 5 a11 11 0 0 1 0 14"/>
+  </symbol>
+  <symbol id="i-parkbrake" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="6.2"/>
+    <path d="M10.2 8.4 v7.2M10.2 8.4 h2.8 a2.1 2.1 0 0 1 0 4.2 h-2.8"/>
+    <path d="M3 7.6 a8 8 0 0 0 0 8.8M21 7.6 a8 8 0 0 1 0 8.8"/>
+  </symbol>
+  <symbol id="i-trailerbrake" viewBox="0 0 24 24">
+    <path d="M4.4 7.6 h11.2 v7.6 h-11.2 z"/>
+    <circle class="solid" cx="7.6" cy="17.4" r="1.7"/><circle class="solid" cx="12.4" cy="17.4" r="1.7"/>
+    <path d="M15.6 11.4 h3.4"/><path d="M2 8.6 a6 6 0 0 0 0 6.6M21.4 8.6 a6 6 0 0 1 0 6.6"/>
+  </symbol>
+  <symbol id="i-diff" viewBox="0 0 24 24">
+    <path class="solid" d="M2.6 7.4 h2.8 v9.2 h-2.8 zM18.6 7.4 h2.8 v9.2 h-2.8 z"/>
+    <path d="M5.4 12 h13.2"/><circle class="solid" cx="12" cy="12" r="3.2"/>
+    <path d="M9.6 6.6 v-1.4 a2.4 2.4 0 0 1 4.8 0 v1.4" stroke-width="1.5"/>
+  </symbol>
+  <symbol id="i-retarder" viewBox="0 0 24 24">
+    <path d="M12 3.4 v10.8M8 10.4 l4 3.9 l4 -3.9"/><path d="M4.6 18.6 h14.8"/>
+  </symbol>
+  <symbol id="i-motorbrake" viewBox="0 0 24 24">
+    <path class="solid" d="M2.8 10 h2.6 V7.6 h4.8 V10 h2.2 l3.6 -2.4 v8.8 l-3.6 -2.4 h-2.2 v2.4 h-4.8 V14 h-2.6 z"/>
+    <path d="M18.6 6.6 a7.6 7.6 0 0 1 0 10.8" stroke-width="1.6"/>
+  </symbol>
+  <symbol id="i-cruise" viewBox="0 0 24 24">
+    <path d="M4.2 17.6 a8.6 8.6 0 0 1 15.6 0"/><path d="M12 17.6 L16.6 10.4"/>
+    <circle class="solid" cx="12" cy="17.6" r="1.5"/>
+  </symbol>
+  <symbol id="i-plus"  viewBox="0 0 24 24"><path d="M12 5.4 v13.2M5.4 12 h13.2"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5.4 12 h13.2"/></symbol>
+  <symbol id="i-power" viewBox="0 0 24 24"><path d="M12 3.2 v8.4"/><path d="M7.4 6.8 a6.6 6.6 0 1 0 9.2 0"/></symbol>
+  <symbol id="i-fuel" viewBox="0 0 24 24">
+    <path d="M4.4 20.4 V5.2 a1.8 1.8 0 0 1 1.8 -1.8 h5 a1.8 1.8 0 0 1 1.8 1.8 v15.2 z"/>
+    <path d="M13 9.4 h3.4 a1.6 1.6 0 0 1 1.6 1.6 v5.4 a1.8 1.8 0 0 0 3.6 0 V8.2 l-2.6 -2.8"/>
+  </symbol>
+  <symbol id="i-radio" viewBox="0 0 24 24">
+    <path d="M9.4 17.2 V5.6 l9 -2.2 v11.4"/>
+    <circle class="solid" cx="6.8" cy="17.6" r="2.6"/><circle class="solid" cx="15.8" cy="14.8" r="2.6"/>
+  </symbol>
+  <symbol id="i-map" viewBox="0 0 24 24">
+    <path d="M2.4 6.4 L9 3.8 l6 2.6 l6.6 -2.6 v13.8 L15 20.2 l-6 -2.6 l-6.6 2.6 z"/>
+    <path d="M9 3.8 v13.8M15 6.4 v13.8"/>
+  </symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24">
+    <path d="M2.6 8.2 h4.2 l1.9 -2.6 h6.6 l1.9 2.6 h4.2 v11 h-18.8 z"/>
+    <circle cx="12" cy="13.6" r="3.4"/>
+  </symbol>
+  <!-- Interior camera: a steering wheel, because that is what you see from the seat.
+       A second camera body next to the first one would read as "another camera", not
+       as "the view from inside". -->
+  <symbol id="i-cabin" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="8.8"/><circle cx="12" cy="12" r="2.4"/>
+    <path d="M3.4 11 h6.2M14.4 11 h6.2M12 14.4 V20.6"/>
+  </symbol>
+  <symbol id="i-garage" viewBox="0 0 24 24">
+    <path d="M2.6 20.4 V9.6 L12 3.4 l9.4 6.2 v10.8 z"/><path d="M7 20.4 v-6.4 h10 v6.4"/>
+  </symbol>
+  <symbol id="i-compass" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="8.6"/>
+    <path class="solid" d="M12 5.6 l2.6 6.4 -2.6 -1.4 -2.6 1.4 z"/>
+  </symbol>
+  <symbol id="i-attach" viewBox="0 0 24 24">
+    <path d="M3.4 15.4 h6.2"/><path d="M14.4 15.4 h6.2"/>
+    <circle cx="12" cy="15.4" r="2.4"/><path d="M12 13 V5.4 h4.4"/>
+  </symbol>
+  <symbol id="i-display" viewBox="0 0 24 24">
+    <rect x="2.8" y="5.2" width="18.4" height="12.2" rx="1.6"/>
+    <path d="M6.4 14.2 l3.2 -4 2.6 2.4 3-3.8 2.4 5.4"/>
+  </symbol>
+  <symbol id="i-info" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="8.6"/><path d="M12 11 v5.6"/><path class="solid" d="M11 7.2 h2 v2 h-2 z"/>
+  </symbol>
+  <symbol id="i-mirror" viewBox="0 0 24 24">
+    <path d="M4.6 6.4 h5.2 v11.2 h-5.2 z"/><path d="M14.2 6.4 h5.2 v11.2 h-5.2 z"/>
+    <path d="M12 3.6 v16.8"/>
+  </symbol>
+  <symbol id="i-hud" viewBox="0 0 24 24">
+    <path d="M12 3.4 l8.6 4.6 -8.6 4.6 -8.6 -4.6 z"/>
+    <path d="M4.4 12.4 l7.6 4 7.6 -4"/><path d="M4.4 16.4 l7.6 4 7.6 -4"/>
+  </symbol>
+  <symbol id="i-navmode" viewBox="0 0 24 24">
+    <path class="solid" d="M12 3.6 l6.6 15.4 -6.6 -3.4 -6.6 3.4 z"/>
+  </symbol>
+  <symbol id="i-adjust" viewBox="0 0 24 24">
+    <path d="M4.4 8 h15.2"/><path d="M4.4 16 h15.2"/>
+    <circle cx="9.4" cy="8" r="2.2"/><circle cx="15" cy="16" r="2.2"/>
+  </symbol>
+  <symbol id="i-service" viewBox="0 0 24 24">
+    <path d="M15.4 3.6 a4.8 4.8 0 0 0 -5 7.8 L4.2 17.6 l2.2 2.2 6.2 -6.2 a4.8 4.8 0 0 0 7.8 -5 l-3 3 -2.8 -.6 -.6 -2.8 z"/>
+  </symbol>
+  <symbol id="i-enter" viewBox="0 0 24 24">
+    <path d="M20 5.4 v6.8 H6.2"/><path d="M10.4 8 L6 12.2 l4.4 4.2"/>
+  </symbol>
+  <symbol id="i-esc" viewBox="0 0 24 24">
+    <rect x="3.2" y="6" width="17.6" height="12" rx="2"/>
+    <path d="M8.6 9.8 L15.4 14.2"/><path d="M15.4 9.8 L8.6 14.2"/>
+  </symbol>
+</defs></svg>
+
+<div class="stage">
+<div class="deck" id="deck">
+
+  <!-- status bar -->
+  <div class="bar">
+    <button class="pill" id="link" data-link="down">
+      <span class="dot"></span><span id="linkText">CONNECTING</span><span class="ms" id="linkMs"></span>
+    </button>
+    <span class="chip" id="game">—</span>
+    <span class="chip tap" id="unitChip" title="Switch units and currency">KM · €</span>
+    <div class="vr"></div>
+    <div class="cargo"><span class="lbl">Cargo</span><b id="cargoV">—</b></div>
+    <div class="spacer"></div>
+    <div class="limit none" id="limit">—</div>
+    <div class="clock" id="clock">—</div>
+    <div class="vr"></div>
+    <div class="rest" id="restBox"><span class="lbl">Drive left</span><b id="rest">—</b></div>
+  </div>
+
+  <div class="main">
+
+    <!-- cluster -->
+    <section class="card cluster">
+      <div class="dial">
+        <svg viewBox="0 0 200 156" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <path d="M 22 138 A 84 84 0 1 1 178 138" fill="none" stroke="var(--raised)" stroke-width="13" stroke-linecap="round"/>
+          <path id="arcFg" d="M 22 138 A 84 84 0 1 1 178 138" fill="none" stroke="var(--accent)" stroke-width="13" stroke-linecap="round"/>
+          <path id="arcLim" d="M 22 138 A 84 84 0 1 1 178 138" fill="none" stroke="var(--crit)" stroke-width="13" stroke-linecap="butt"/>
+        </svg>
+        <div class="read"><div class="kph"><span id="kph">0</span><small id="speedUnit">km / h</small></div></div>
+      </div>
+
+      <div class="rpm" id="rpm"></div>
+
+      <div class="gearrow">
+        <div class="gear"><span class="lbl">Gear</span><b id="gearVal">N</b></div>
+        <div class="cc" id="ccBox"><span class="lbl">Cruise</span><b id="ccVal">—</b></div>
+      </div>
+
+      <div class="ccrow">
+        <button class="btn" data-cmd="cruise_set" data-confirm="cruise_on"><svg class="ic"><use href="#i-cruise"/></svg>Set</button>
+        <button class="btn" data-cmd="cruise_down"><svg class="ic"><use href="#i-minus"/></svg>Slower</button>
+        <button class="btn" data-cmd="cruise_up"><svg class="ic"><use href="#i-plus"/></svg>Faster</button>
+      </div>
+
+      <div class="tells">
+        <div class="tell" data-t="turn"   id="tL"><svg class="ic"><use href="#i-left"/></svg></div>
+        <div class="tell" data-t="high"   id="tH"><svg class="ic"><use href="#i-high"/></svg></div>
+        <div class="tell" data-t="beacon" id="tB"><svg class="ic"><use href="#i-beacon"/></svg></div>
+        <div class="tell" data-t="park"   id="tP"><svg class="ic"><use href="#i-parkbrake"/></svg></div>
+        <div class="tell" data-t="warn"   id="tW"><svg class="ic"><use href="#i-fuel"/></svg></div>
+        <div class="tell" data-t="turn"   id="tR"><svg class="ic"><use href="#i-right"/></svg></div>
+      </div>
+    </section>
+
+    <!-- nav -->
+    <section class="card nav">
+      <div class="mapwrap">
+        <canvas id="map"></canvas>
+        <div class="mapui">
+          <div class="maptop">
+            <div class="plaque"><svg class="ic"><use href="#i-compass"/></svg><b id="headingV">—</b></div>
+            <button class="recentre" id="recentre">Recentre</button>
+            <div class="zoom">
+              <button id="zin" aria-label="Zoom in"><svg class="ic"><use href="#i-plus"/></svg></button>
+              <button id="zout" aria-label="Zoom out"><svg class="ic"><use href="#i-minus"/></svg></button>
+            </div>
+          </div>
+          <div class="mapfoot">
+            <div class="scale"><i></i><span id="scaleTxt">—</span></div>
+            <div class="scale"><span id="coordTxt">—</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="navinfo">
+        <div class="item"><span class="lbl">Destination</span><b id="dstV">—</b></div>
+        <div class="vr"></div>
+        <div class="item"><span class="lbl">Remaining</span><b class="mono" id="distV">—</b></div>
+        <div class="vr"></div>
+        <div class="item" id="etaBox"><span class="lbl">Arrival</span><b class="mono" id="etaV">—</b></div>
+        <div class="vr"></div>
+        <div class="item"><span class="lbl">Deadline</span><b class="mono" id="deadlineV">—</b></div>
+        <div class="vr"></div>
+        <div class="item" id="slackBox"><span class="lbl">Slack</span><b class="mono" id="slackV">—</b></div>
+      </div>
+
+      <!-- The game's own route advisor, not this panel's map. The zoom buttons above
+           the canvas move the mini GPS on the tablet; these move the one on screen in
+           the truck, which is why they are kept apart and labelled. -->
+      <div class="gpsrow">
+        <span class="lbl">In-game GPS</span>
+        <button class="btn" data-cmd="world_map"><svg class="ic"><use href="#i-map"/></svg>World map</button>
+        <button class="btn" data-cmd="nav_mode"><svg class="ic"><use href="#i-navmode"/></svg>Nav mode</button>
+        <button class="btn" data-cmd="nav_zoom_out"><svg class="ic"><use href="#i-minus"/></svg>Zoom out</button>
+        <button class="btn" data-cmd="nav_zoom_in"><svg class="ic"><use href="#i-plus"/></svg>Zoom in</button>
+      </div>
+    </section>
+
+    <!-- vitals -->
+    <section class="card vitals">
+      <div class="body">
+        <div class="meter">
+          <div class="top"><span class="lbl" id="fuelLbl">Diesel</span><span class="val" id="fuelV">—</span></div>
+          <div class="track"><div class="fill ok" id="fuelB" style="width:0%"></div></div>
+        </div>
+        <div class="meter">
+          <div class="top"><span class="lbl">Air</span><span class="val" id="airV">—</span></div>
+          <div class="track"><div class="fill ok" id="airB" style="width:0%"></div></div>
+        </div>
+        <div class="meter">
+          <div class="top"><span class="lbl">Water · oil</span><span class="val" id="tmpV">—</span></div>
+          <div class="track"><div class="fill ok" id="tmpB" style="width:0%"></div></div>
+        </div>
+        <div class="split"></div>
+        <span class="lbl">Damage</span>
+        <div class="dmg" id="dmg"></div>
+        <div class="split"></div>
+        <div class="odo"><span class="lbl">Odometer</span><b id="odoV">—</b></div>
+        <!-- How much of the shift is gone. The header carries the same figure as a
+             number; a bar is what tells you at a glance whether there is time for one
+             more delivery before the bunk. -->
+        <div class="meter">
+          <div class="top"><span class="lbl">Driver</span><span class="val" id="restV">—</span></div>
+          <div class="track"><div class="fill ok" id="restB" style="width:0%"></div></div>
+        </div>
+      </div>
+      <!-- Outside .body on purpose: the body greys out when telemetry stops, and a menu
+           is precisely when these two are wanted. Keystrokes, not vJoy buttons, because
+           they drive menus and the game may refuse a controller binding there. -->
+      <div class="keysrow">
+        <button class="btn" data-cmd="ui_esc"><svg class="ic"><use href="#i-esc"/></svg>Esc</button>
+        <button class="btn" data-cmd="ui_enter"><svg class="ic"><use href="#i-enter"/></svg>Enter</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- control deck -->
+  <div class="card deckrows">
+    <!-- Three rows, grouped the way the hands find them in a cab: what is on the
+         stalks, what stops the truck, and what is on the screens. Nothing here is
+         a switch this cab does not have -- lights off and parking lights went back
+         into the one light control the game itself offers, and the axle lifts,
+         interior light, radio, quick save and tow are done from the wheel or the
+         keyboard, so they were only ever taking up room. -->
+    <div class="grp">
+      <span class="lbl">Stalks — lights, wipers &amp; horns</span>
+      <div class="row">
+        <!-- One light control, as on the stalk: each press steps off → parking → low.
+             High beam is separate, because it is a separate switch and because it
+             cannot come on until low beam already has. -->
+        <button class="btn" data-cmd="lights_low" data-confirm="lights.beam" data-cycle><svg class="ic"><use href="#i-low"/></svg>Lights</button>
+        <button class="btn" data-cmd="high_beam" data-confirm="lights.high"><svg class="ic"><use href="#i-high"/></svg>High beam</button>
+        <button class="btn" data-cmd="beacon" data-confirm="lights.beacon"><svg class="ic"><use href="#i-beacon"/></svg>Beacon</button>
+        <button class="btn red" data-cmd="hazard" data-confirm="lights.hazard"><svg class="ic"><use href="#i-hazard"/></svg>Hazard</button>
+        <button class="btn" data-cmd="wipers" data-confirm="wipers"><svg class="ic"><use href="#i-wiper"/></svg>Wipers</button>
+        <button class="btn" data-hold="horn"><svg class="ic"><use href="#i-horn"/></svg>Horn</button>
+        <button class="btn" data-hold="air_horn"><svg class="ic"><use href="#i-airhorn"/></svg>Air horn</button>
+      </div>
+    </div>
+
+    <div class="grp">
+      <span class="lbl">Brakes &amp; drivetrain</span>
+      <div class="row">
+        <!-- Engine first: it is the first thing done and the brake comes off after it. -->
+        <button class="btn" data-cmd="engine" data-confirm="engine"><svg class="ic"><use href="#i-power"/></svg>Engine</button>
+        <button class="btn red" data-cmd="park_brake" data-confirm="park_brake"><svg class="ic"><use href="#i-parkbrake"/></svg>Park brake</button>
+        <button class="btn" data-hold="trailer_brake"><svg class="ic"><use href="#i-trailerbrake"/></svg>Trailer brake</button>
+        <button class="btn" data-cmd="diff_lock" data-confirm="diff_lock"><svg class="ic"><use href="#i-diff"/></svg>Diff lock</button>
+        <!-- Plain presses. The stepper this replaces read the fitted step count from
+             telemetry and refused to fire when the truck reported none, which left the
+             buttons impossible to bind on exactly the trucks that needed checking. -->
+        <button class="btn narrow" data-cmd="retarder_down"><svg class="ic"><use href="#i-minus"/></svg>Ret −</button>
+        <button class="btn narrow" data-cmd="retarder_up"><svg class="ic"><use href="#i-retarder"/></svg>Ret +</button>
+        <button class="btn" data-cmd="motor_brake" data-confirm="motor_brake"><svg class="ic"><use href="#i-motorbrake"/></svg>Motor brake</button>
+        <button class="btn" data-cmd="attach"><svg class="ic"><use href="#i-attach"/></svg>Attach</button>
+      </div>
+    </div>
+
+    <!-- Cruise is not repeated here: it already sits under the speedometer, where the
+         speed it is holding is legible in the same glance. -->
+    <div class="grp">
+      <span class="lbl">Screens, camera &amp; service</span>
+      <div class="row">
+        <button class="btn" data-cmd="display_mode"><svg class="ic"><use href="#i-display"/></svg>Dash display</button>
+        <button class="btn" data-cmd="infotainment"><svg class="ic"><use href="#i-radio"/></svg>Infotainment</button>
+        <button class="btn" data-cmd="quick_info"><svg class="ic"><use href="#i-info"/></svg>Quick info</button>
+        <button class="btn" data-cmd="virtual_mirrors"><svg class="ic"><use href="#i-mirror"/></svg>Mirrors</button>
+        <button class="btn" data-cmd="hud_widgets"><svg class="ic"><use href="#i-hud"/></svg>HUD</button>
+        <button class="btn" data-cmd="camera"><svg class="ic"><use href="#i-camera"/></svg>Camera</button>
+        <button class="btn" data-cmd="camera_interior"><svg class="ic"><use href="#i-cabin"/></svg>Interior</button>
+        <button class="btn" data-cmd="adjust_vehicle"><svg class="ic"><use href="#i-adjust"/></svg>Vehicle adjust</button>
+        <button class="btn" data-cmd="services"><svg class="ic"><use href="#i-service"/></svg>Services</button>
+        <button class="btn" data-cmd="garage"><svg class="ic"><use href="#i-garage"/></svg>Garage</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="notice" id="notice"></div>
+</div>
+</div>
+
+<script src="mapdata.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
