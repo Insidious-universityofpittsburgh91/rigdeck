@@ -4,6 +4,8 @@ A single-screen dashboard and control panel for Euro Truck Simulator 2 and Ameri
 Truck Simulator, running in a browser on an Android tablet. Everything is on one screen:
 no pages, no swiping, no scrolling.
 
+![The panel running against ETS2](docs/panel-ets2.png)
+
 Two things it does that a generic button box cannot:
 
 - **Commands are confirmed, not hoped for.** A button stays pending until the game's own
@@ -197,6 +199,8 @@ One build covers both games. The panel follows whichever game is running — ETS
 km and €, ATS gives miles and $ — and the chip in the status bar cycles
 auto → metric → imperial if you want to override it. The server always sends raw SI
 values; formatting happens on the tablet, so switching is instant.
+
+![The same panel against ATS, in miles and dollars](docs/panel-ats.png)
 
 ## The map
 
